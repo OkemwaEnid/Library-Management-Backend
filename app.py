@@ -2,10 +2,11 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask_cors import CORS
-from marshmallow_sqlalchemy import SQLAlchemyAutoSchema  # Corrected import
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 import os
+from models import db, User, Book  # Import models
+from schemas import UserSchema, BookSchema  # Import schemas
 
 load_dotenv()  # Load environment variables from .env
 
@@ -16,37 +17,8 @@ CORS(app)  # Enable CORS for frontend
 # Database setup
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
+db.init_app(app)
 ma = Marshmallow(app)
-
-# User Model (explicitly referring to the 'users' table)
-class User(db.Model):
-    __tablename__ = 'users'  # Explicitly set table name to 'users'
-    
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100), unique=True, nullable=False)
-    email = db.Column(db.String(100), unique=True, nullable=False)
-    password = db.Column(db.String(100), nullable=False)
-    role = db.Column(db.String(10), nullable=False, default='user')
-
-# Book Model (explicitly referring to the 'books' table)
-class Book(db.Model):
-    __tablename__ = 'books'  # Explicitly set table name to 'books'
-    
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(255), nullable=False)
-    author = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.Text)
-
-# User Schema
-class UserSchema(SQLAlchemyAutoSchema):
-    class Meta:
-        model = User
-
-# Book Schema
-class BookSchema(SQLAlchemyAutoSchema):
-    class Meta:
-        model = Book
 
 # Initialize schemas
 user_schema = UserSchema()
