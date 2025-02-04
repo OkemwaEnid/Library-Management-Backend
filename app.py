@@ -16,7 +16,7 @@ app = Flask(__name__)
 # CORS=(app)
 CORS(
     app,
-    resources={r"/api/*": {"origins": "https://library-management-app-frontend-psi.vercel.app/"}},  # Allow React frontend
+    resources={r"/api/*": {"origins": "https://lms-frontend-ochre-eta.vercel.app/"}},  # Allow React frontend
     supports_credentials=True,  # Allow cookies
 )  # Enable CORS for frontend
 
