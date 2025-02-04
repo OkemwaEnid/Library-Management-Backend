@@ -7,11 +7,13 @@ from dotenv import load_dotenv
 import os
 from models import db, User, Book  # Import models
 from schemas import UserSchema, BookSchema  # Import schemas
+from flask_migrate import Migrate
 
 load_dotenv()  # Load environment variables from .env
 
 # Init app
 app = Flask(__name__)
+# CORS=(app)
 CORS(
     app,
     resources={r"/api/*": {"origins": "https://library-management-app-frontend-psi.vercel.app"}},  # Allow React frontend
@@ -23,6 +25,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 ma = Marshmallow(app)
+
+migrate = Migrate(app, db)
 
 # Initialize schemas
 user_schema = UserSchema()
