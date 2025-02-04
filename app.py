@@ -14,17 +14,12 @@ load_dotenv()  # Load environment variables from .env
 # Init app
 app = Flask(__name__)
 # CORS=(app)
-# CORS(
-#     app,
-#     resources={r"/api/*": {"origins": "https://library-management-app-frontend-psi.vercel.app"}},  # Allow React frontend
-#     supports_credentials=True,  # Allow cookies
-# )  # Enable CORS for frontend
-
 CORS(
     app,
-    resources={r"/*": {"origins": "https://library-management-app-frontend-psi.vercel.app"}},  # Allow all routes
+    resources={r"/api/*": {"origins": "https://library-management-app-frontend-psi.vercel.app"}},  # Allow React frontend
     supports_credentials=True,  # Allow cookies
-)
+)  # Enable CORS for frontend
+
 
 
 # Database setup
